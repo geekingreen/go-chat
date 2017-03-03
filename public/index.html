@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.io test</title>
+  </head>
+
+  <body>
+    <div class="c-chat">
+      <form class="c-chat-form">
+        <input name="message" />
+        <button name="submit">Submit</button>
+      </form>
+      <div class="c-chat-messages">
+
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script>
+      var socket = io();
+      var chatForm = document.querySelector('.c-chat-form');
+      var messages = document.querySelector(".c-chat-messages");
+      var username = prompt('Username:');
+
+      socket.on('chatMessage', (msg) => {
+        const message = document.createElement('div');
+        message.innerText = msg.username + ': ' + msg.message;
+        messages.prepend(message);
+        chatForm.message.value = '';
+      });
+
+      chatForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        socket.emit("chatMessage", { username: username, message: chatForm.message.value });
+      });
+    </script>
+  </body>
+</html>
