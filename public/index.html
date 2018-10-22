@@ -15,23 +15,23 @@
       </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
     <script>
-      var socket = io();
+      var io = io();
       var chatForm = document.querySelector('.c-chat-form');
       var messages = document.querySelector(".c-chat-messages");
       var username = prompt('Username:');
 
-      socket.on('chatMessage', (msg) => {
+      io.on('chatMessage', (msg) => {
         const message = document.createElement('div');
         message.innerText = msg.username + ': ' + msg.message;
         messages.prepend(message);
-        chatForm.message.value = '';
       });
 
       chatForm.addEventListener('submit', function (e) {
         e.preventDefault();
-        socket.emit("chatMessage", { username: username, message: chatForm.message.value });
+        io.emit('chatMessage', { username: username, message: chatForm.message.value });
+        chatForm.message.value = '';
       });
     </script>
   </body>
